@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+    status : 这个用于设置log4j2自身内部的信息输出,可以不设置,当设置成trace时,会看到log4j2内部各种详细输出
+    monitorInterval : Log4j能够自动检测修改配置文件和重新配置本身, 设置间隔秒数。
+-->
+<Configuration status="INFO" monitorInterval="600">
+
+    <!--全局参数-->
+    <Properties>
+        <!-- 配置日志文件输出目录 -->
+        <Property name="LOG_HOME">logs</Property>
+        <!-- 日志保存天数 -->
+        <Property name="LOG_SAVED_DATE">7d</Property>
+    </Properties>
+
+    <Appenders>
+
+        <!--这个输出控制台的配置-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <!-- 控制台只输出level及以上级别的信息(onMatch),其他的直接拒绝(onMismatch) -->
+            <ThresholdFilter level="trace" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </Console>
+
+        <!-- 设置日志格式并配置日志压缩格式(service.log.年份.gz)    immediateFlush ：是否立即刷新 -->
+        <RollingRandomAccessFile name="service_appender"
+                                 immediateFlush="true" fileName="${LOG_HOME}/service.log"
+                                 filePattern="${LOG_HOME}/service.log.%d{yyyy-MM-dd}.log.tar.gz">
+            <!--
+                %d{yyyy-MM-dd HH:mm:ss, SSS} : 日志生产时间
+                %p : 日志输出格式
+                %c : logger的名称
+                %m : 日志内容，即 logger.info("message")
+                %n : 换行符
+                %C : Java类名
+                %L : 日志输出所在行数
+                %M : 日志输出所在方法名
+                hostName : 本地机器名
+                hostAddress : 本地ip地址
+             -->
+            <PatternLayout>
+                <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %class{36} %L %M -- %msg%xEx%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+        </RollingRandomAccessFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- 配置日志的根节点 -->
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="service_appender"/>
+        </root>
+        <!-- 第三方日志系统 -->
+        <logger name="org.springframework.core" level="ERROR"/>
+        <logger name="org.springframework.beans" level="ERROR"/>
+        <logger name="org.springframework.context" level="ERROR"/>
+        <logger name="org.springframework.web" level="ERROR"/>
+        <logger name="org.quartz" level="ERROR"/>
+        <logger name="com.qbk" level="DEBUG"/>
+    </Loggers>
+
+</Configuration>

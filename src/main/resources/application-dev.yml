@@ -1,0 +1,151 @@
+server:
+  port: 8082
+  compression:
+    enabled: true
+  tomcat:
+    remote-ip-header: X-Forwarded-For
+    protocol-header: X-Forwarded-Proto
+  session:
+    cookie:
+      http-only: true
+
+info:
+  build:
+    name: ${project.name}
+    description: ${project.description}
+    version: ${project.version}
+
+logging:
+  config: classpath:log4j2.xml
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+    livereload:
+      enabled: false
+  application:
+    name: ${project.name}
+  mvc:
+    date-format: yyyy-MM-dd HH:mm:ss
+    favicon:
+      enabled: false
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password: 123456     # 密码（默认为空）
+    timeout: 6000  # 连接超时时长（毫秒）
+    pool:
+      max-active: 1000  # 连接池最大连接数（使用负值表示没有限制）
+      max-wait: -1      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-idle: 10      # 连接池中的最大空闲连接
+      min-idle: 5       # 连接池中的最小空闲连接
+  http:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  mail:
+    host: localhost
+    port: 25
+    username: admin@localhost
+    password:
+  #sqlite
+  datasource:
+    initialize: false  #指定初始化数据源，是否用data.sql来初始化，默认: true
+    # 配置当前要使用的数据源的操作类型
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driver-class-name: org.sqlite.JDBC
+      url: jdbc:sqlite::resource:db/test.sqlite
+      username:
+      password:
+  #mysql
+#  datasource:
+#      initialize: false  #指定初始化数据源，是否用data.sql来初始化，默认: true
+#      #name: test
+#      # 配置当前要使用的数据源的操作类型
+#      type: com.alibaba.druid.pool.DruidDataSource
+#      # 使用druid数据源
+#      druid:
+#        #zeroDateTimeBehavior=convertToNull作用：解决java.sql.SQLException:日期0000-00-00转换为null
+#        url: jdbc:mysql://localhost:3306/remoteservice?useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true&zeroDateTimeBehavior=convertToNull
+#        username: root
+#        password: 123456
+#        # 配置MySQL的驱动程序类
+#        driver-class-name: com.mysql.jdbc.Driver
+#        #监控统计拦截的filters
+#        filters: stat
+#        #配置初始化大小/最小/最大
+#        initialSize: 1
+#        minIdle: 1
+#        maxActive: 20
+#        #获取连接等待超时时间
+#        maxWait: 60000
+#        #间隔多久进行一次检测，检测需要关闭的空闲连接
+#        timeBetweenEvictionRunsMillis: 60000
+#        #一个连接在池中最小生存的时间
+#        minEvictableIdleTimeMillis: 300000
+#        validationQuery: select 'x'
+#        testWhileIdle: true
+#        testOnBorrow: false
+#        testOnReturn: false
+#        #打开PSCache，并指定每个连接上PSCache的大小。oracle设为true，mysql设为false。分库分表较多推荐设置为false
+#        poolPreparedStatements: true
+#        maxOpenPreparedStatements: 20
+
+  #oracle
+#  datasource:
+#    driver-class-name: oracle.jdbc.driver.OracleDriver
+#    url: jdbc:oracle:thin:@127.0.0.1:1521:orcl
+#    username: scott
+#    password: scott
+
+  #H2
+  #url有以下几种形式:
+  # jdbc:h2:E:*/database 会持久化到磁盘文件，但是是单连接
+  # jdbc:h2:tcp://IP/database 通过远程连接的方式
+  # jdbc:h2:mem:database 直接在内存中，程序只要重启就会消失
+#  datasource:
+#    driver-class-name: org.h2.Driver
+#    url: jdbc:h2:mem:testdbsa
+#    username: sa
+#    password:
+#    schema: classpath:db/schema.sql #数据库的结构 进行该配置后，每次启动程序，程序都会运行
+#    data: classpath:db/data.sql #数据库的操作 进行该配置后，每次启动程序，程序都会运行
+#  h2:
+#    console:
+#      settings:
+#        web-allow-others: true #进行该配置后，h2 web consloe就可以在远程访问了。否则只能在本机访问。
+#        trace: true
+#      path: /h2-console  #进行该配置，你就可以通过YOUR_URL/h2-console访问h2 web consloe。YOUR_URL是你程序的访问URl。
+#      enabled: true #进行该配置，程序开启时就会启动h2 web consloe。当然这是默认的，如果你不想在启动程序时启动h2 web consloe，那么就设置为false。
+
+
+
+
+mybatis:
+  mapper-locations: classpath*:/mapper/*.xml
+  type-aliases-package: com.qbk.entity
+  configuration:
+    cacheEnabled: true
+    lazyLoadingEnabled: true
+    multipleResultSetsEnabled: false
+    useColumnLabel: true
+    defaultExecutorType: REUSE
+    map-underscore-to-camel-case: true
+    default-fetch-size: 100
+    default-statement-timeout: 25000
+    aggressiveLazyLoading: false
+
+pagehelper:
+    helperDialect: oracle
+    reasonable: true
+    supportMethodsArguments: true
+    pageSizeZero: true
+    params: count=countSql
+
+security:
+  basic:
+    #security开关
+    enabled: false
