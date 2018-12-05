@@ -19,11 +19,11 @@ logging:
   config: classpath:log4j2.xml
 
 spring:
-  devtools:
+  devtools: #热部署
     restart:
-      enabled: true
+      enabled: false #是否支持热部署
     livereload:
-      enabled: false
+      enabled: false #是否支持livereload
   application:
     name: ${project.name}
   mvc:

@@ -45,6 +45,10 @@ public interface DataSourceMapper {
     @Select("SELECT id , drive_class AS driveClass ,url , username ,password FROM t_data_source")
     List<DataSourceEntity> getSourceList();
 
-
+    /**
+     * 删除数据源
+     */
+    @Delete("DELETE FROM t_data_source WHERE id = #{sourceId}")
+    int deleteSource(@Param("sourceId") String sourceId);
 
 }

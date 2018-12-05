@@ -129,5 +129,20 @@ public class DataSourceServiceImpl implements DataSourceService {
         return BaseResultGenerator.success("查询成功",keys);
     }
 
+    /**
+     * 删除数据源
+     */
+    @SysLog("删除数据源")
+    @Override
+    public BaseResult deleteSource(String sourceId) {
+        boolean delResult = dynamicDataSource.delDatasources(sourceId);
+        if(delResult){
+            dataSourceMapper.deleteSource(sourceId);
+            return BaseResultGenerator.success("删除数据源成功");
+        }else {
+            return BaseResultGenerator.error("删除数据源失败");
+        }
+    }
+
 
 }

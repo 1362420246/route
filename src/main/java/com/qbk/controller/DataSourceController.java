@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
 
 /**
  * @Author: quboka
@@ -68,5 +69,11 @@ public class DataSourceController {
         return dataSourceService.addDataSource(dataSourceEntity);
     }
 
+    @ApiOperation(value="数据源删除",notes="数据源删除接口")
+    @DeleteMapping(value = "/datasource")
+    public BaseResult deleteSource(
+            @ApiParam(name = "sourceId",value = "数据源id" ,required = true) @RequestBody String sourceId){
+        return dataSourceService.deleteSource(sourceId);
+    }
 
 }

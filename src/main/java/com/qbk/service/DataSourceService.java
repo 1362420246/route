@@ -3,6 +3,8 @@ package com.qbk.service;
 import com.qbk.entity.DataSourceEntity;
 import com.qbk.util.BaseResult;
 
+import java.util.List;
+
 /**
  * @Author: quboka
  * @Date: 2018/12/4 15:49
@@ -35,6 +37,8 @@ public interface DataSourceService {
      */
     BaseResult getSourceList();
 
-
-
+    /**
+     * 删除数据源
+     */
+    BaseResult deleteSource(String sourceId);
 }
