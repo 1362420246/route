@@ -105,8 +105,14 @@ public class DynamicDataSource extends AbstractRoutingDataSource {
             druidDataSource.setMaxWait(60000);
             druidDataSource.setFilters("stat");
             DataSource createDataSource = (DataSource) druidDataSource;
-            druidDataSource.init();
             Map<Object, Object> map = this.dynamicTargetDataSources;
+            //避免重复添加
+            boolean b = map.containsKey(key);
+            if(b){
+                delDatasources(key);
+            }
+            //数据源初始化
+            druidDataSource.init();
             // 加入map
             map.put(key, createDataSource);
             // 将map赋值给父类的TargetDataSources
